@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -17,9 +18,13 @@ public class ObjectDragTest : MonoBehaviour
 
 	private bool isBeingDragged;
 
+	private ObjectDragTest swappableObject;
+	
 	private Vector3 positionBeforeDrag;
 
 	private float Width;
+
+	public Action OnSwap;
 	
 	private void Start()
 	{
@@ -48,19 +53,24 @@ public class ObjectDragTest : MonoBehaviour
 		triggers.triggers.Add(dragEndEntry);
 	}
 
-
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (!isBeingDragged) return;
 		
 		ObjectDragTest dragObj = other.gameObject.GetComponent<ObjectDragTest>();
-
+		
 		if (dragObj)
 		{
+			swappableObject = dragObj;
 			swappingWithIndex = dragObj.RowInColmn;
-			Debug.Log(swappingWithIndex);
+//			Debug.Log(swappingWithIndex);
 		}
 		
+	}
+
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		swappableObject = null;
 	}
 
 	private void startDrag()
@@ -89,7 +99,31 @@ public class ObjectDragTest : MonoBehaviour
 		isBeingDragged = false;
 
 		transform.position = positionBeforeDrag;
+
+
+
+		if (swappableObject)
+		{
+			swapPositionsWith(swappableObject);
+			OnSwap?.Invoke();
+		}
+		
 //		Debug.Log("Drag End");
 
+	}
+
+	private void swapPositionsWith(ObjectDragTest draggedObject)
+	{
+		Transform swappedParent = draggedObject.transform.parent;
+		int swappedSibiliingIndex = draggedObject.transform.GetSiblingIndex();
+		
+		Transform currentParent = transform.parent;
+		int currentSiblingIndex = transform.GetSiblingIndex();
+
+		transform.SetParent(swappedParent);
+		transform.SetSiblingIndex(swappedSibiliingIndex);
+		
+		draggedObject.transform.SetParent(currentParent);
+		draggedObject.transform.SetSiblingIndex(currentSiblingIndex);
 	}
 }

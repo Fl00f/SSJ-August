@@ -12,10 +12,12 @@ public class TestMatchThreeGrid : MonoBehaviour
     public Vector2[,] gridImagePositions;
     public Vector2[,] translationImageStartPositions;
 
-
+    public float currentTranslationTime => doingSwap ? swapTime : translationTime;
+    
     public float translationTime;
-
-
+    public float swapTime;
+    public bool doingSwap;
+    
     #region Debug
 
     public bool doImageTranslations;
@@ -43,7 +45,7 @@ public class TestMatchThreeGrid : MonoBehaviour
         
         if (doImageTranslations && translationImageStartPositions != null)
         {
-            float percentage = (Time.time - translationStartTime) / translationTime;
+            float percentage = (Time.time - translationStartTime) / currentTranslationTime;
             float percentageClamp = Mathf.Clamp(percentage, 0, 1);
             translateImagesToGridPositions(percentageClamp);
 
@@ -51,10 +53,10 @@ public class TestMatchThreeGrid : MonoBehaviour
             {
                 doImageTranslations = false;
                 translationImageStartPositions = null;
+                doingSwap = false;
             }
         }
     }
-
 
     private void translateImagesToGridPositions(float translationPercentage)
     {
@@ -96,10 +98,21 @@ public class TestMatchThreeGrid : MonoBehaviour
         {
             for (int j = 0; j < gridColumns[0].childCount; j++)
             {
+                ObjectDragTest dragableObj = gridColumns[i].GetChild(j).GetComponent<ObjectDragTest>();
+                dragableObj.OnSwap += handleSwap;
+                
                 Vector3 pos = gridColumns[i].GetChild(j).position;
 
                 gridImagePositions[i, j] = new Vector2(pos.x, pos.y);
             }
         }
+    }
+
+    private void handleSwap()
+    {
+        doingSwap = true;
+        translationImageStartPositions = getCurrentImagePositions();
+        translationStartTime = Time.time;
+        doImageTranslations = true;
     }
 }
