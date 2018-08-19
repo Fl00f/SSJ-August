@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class TestMatchThreeGrid : MonoBehaviour
 {
+    public static int RowCutOff;
     public Transform[] gridColumns;
     private int ColumnLength => gridColumns.Length;
 
@@ -28,6 +29,7 @@ public class TestMatchThreeGrid : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        RowCutOff = 10;
         SetInitialGridPositions();
     }
 
