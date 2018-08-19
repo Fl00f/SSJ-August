@@ -25,7 +25,7 @@ public class ObjectDragTest : MonoBehaviour
 	private float Width;
 
 	public Action OnSwap;
-	
+
 	private void Start()
 	{
 		Image image = GetComponent<Image>();
@@ -83,7 +83,12 @@ public class ObjectDragTest : MonoBehaviour
 		isBeingDragged = true;
 
 		float x = Input.mousePosition.x;
-		float xClamped = Mathf.Clamp(x, positionBeforeDrag.x - Width, positionBeforeDrag.x + Width);
+
+		int gridChildCount = transform.parent.parent.childCount;
+		float xMin = InColmn == 0 ? positionBeforeDrag.x : positionBeforeDrag.x - Width;
+		float xMax = InColmn == gridChildCount - 1 ? positionBeforeDrag.x : positionBeforeDrag.x + Width;
+		
+		float xClamped = Mathf.Clamp(x, xMin, xMax);
 
 		Vector3 pos = transform.position;
 		pos.x = xClamped;

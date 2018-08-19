@@ -31,8 +31,6 @@ public class TestMatchThreeGrid : MonoBehaviour
         SetInitialGridPositions();
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
@@ -99,7 +97,7 @@ public class TestMatchThreeGrid : MonoBehaviour
             for (int j = 0; j < gridColumns[0].childCount; j++)
             {
                 ObjectDragTest dragableObj = gridColumns[i].GetChild(j).GetComponent<ObjectDragTest>();
-                dragableObj.OnSwap += handleSwap;
+                dragableObj.OnSwap += handleTileSwap;
                 
                 Vector3 pos = gridColumns[i].GetChild(j).position;
 
@@ -108,7 +106,7 @@ public class TestMatchThreeGrid : MonoBehaviour
         }
     }
 
-    private void handleSwap()
+    private void handleTileSwap()
     {
         doingSwap = true;
         translationImageStartPositions = getCurrentImagePositions();
