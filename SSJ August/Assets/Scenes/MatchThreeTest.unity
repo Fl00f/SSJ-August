@@ -306,6 +306,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1280281cf6c454105b80e9783dfb50d5, type: 2}
   m_IsPrefabAsset: 0
@@ -423,6 +428,11 @@ Prefab:
     - target: {fileID: 114983460342873896, guid: 1280281cf6c454105b80e9783dfb50d5,
         type: 2}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -544,6 +554,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1280281cf6c454105b80e9783dfb50d5, type: 2}
   m_IsPrefabAsset: 0
@@ -659,7 +674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -791,6 +806,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1280281cf6c454105b80e9783dfb50d5, type: 2}
   m_IsPrefabAsset: 0
@@ -908,6 +928,11 @@ Prefab:
     - target: {fileID: 114983460342873896, guid: 1280281cf6c454105b80e9783dfb50d5,
         type: 2}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1095,6 +1120,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1280281cf6c454105b80e9783dfb50d5, type: 2}
   m_IsPrefabAsset: 0
@@ -1210,6 +1240,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1280281cf6c454105b80e9783dfb50d5, type: 2}
   m_IsPrefabAsset: 0
@@ -1224,6 +1259,7 @@ GameObject:
   - component: {fileID: 1684161525}
   - component: {fileID: 1684161524}
   - component: {fileID: 1684161523}
+  - component: {fileID: 1684161527}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1307,6 +1343,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1684161527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1684161522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af30b5e95d454d72b9263d805ce7697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridColumns:
+  - {fileID: 197520943}
+  - {fileID: 539943107}
+  - {fileID: 2091200756}
+  - {fileID: 624578347}
+  - {fileID: 856222140}
+  - {fileID: 1339187374}
+  - {fileID: 485008836}
+  - {fileID: 251868389}
+  - {fileID: 2073093851}
+  translationTime: 10
+  doImageTranslations: 0
+  translationStartTime: 0
 --- !u!1 &2044279769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,6 +1540,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1280281cf6c454105b80e9783dfb50d5, type: 2}
   m_IsPrefabAsset: 0
@@ -1597,6 +1662,11 @@ Prefab:
     - target: {fileID: 114983460342873896, guid: 1280281cf6c454105b80e9783dfb50d5,
         type: 2}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114147691166509264, guid: 1280281cf6c454105b80e9783dfb50d5,
+        type: 2}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
