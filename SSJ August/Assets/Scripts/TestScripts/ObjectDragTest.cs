@@ -182,11 +182,7 @@ public class ObjectDragTest : MonoBehaviour
 
         Transform currentColumnTransform = transform.parent;
         Transform gridTransform = currentColumnTransform.parent;
-
-        Debug.Log(InColmn - 1);
-        
-        
-        
+                
         switch (dir)
         {
             case 1:

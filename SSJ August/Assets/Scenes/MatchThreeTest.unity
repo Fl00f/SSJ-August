@@ -1364,7 +1364,7 @@ MonoBehaviour:
   - {fileID: 485008836}
   - {fileID: 251868389}
   - {fileID: 2073093851}
-  translationTime: 2
+  normalTranslationTime: 1
   swapTime: 0.1
   doingSwap: 0
   doImageTranslations: 0
