@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public class TestMatchThreeGrid : MonoBehaviour
 {
@@ -13,19 +15,21 @@ public class TestMatchThreeGrid : MonoBehaviour
     public Vector2[,] gridImagePositions;
     public Vector2[,] translationImageStartPositions;
 
-    public float currentTranslationTime => doingSwap ? swapTime : translationTime;
-    
-    public float translationTime;
+    public float translationTime => doingSwap ? swapTime : normalTranslationTime;
+
+    public float normalTranslationTime;
     public float swapTime;
     public bool doingSwap;
-    
+
+    private Action OnTranslationEnd;
+
     #region Debug
 
     public bool doImageTranslations;
     public float translationStartTime;
-    
+
     #endregion
-    
+
     // Use this for initialization
     void Start()
     {
@@ -42,10 +46,10 @@ public class TestMatchThreeGrid : MonoBehaviour
             translationStartTime = Time.time;
             doImageTranslations = true;
         }
-        
+
         if (doImageTranslations && translationImageStartPositions != null)
         {
-            float percentage = (Time.time - translationStartTime) / currentTranslationTime;
+            float percentage = (Time.time - translationStartTime) / translationTime;
             float percentageClamp = Mathf.Clamp(percentage, 0, 1);
             translateImagesToGridPositions(percentageClamp);
 
@@ -54,6 +58,7 @@ public class TestMatchThreeGrid : MonoBehaviour
                 doImageTranslations = false;
                 translationImageStartPositions = null;
                 doingSwap = false;
+                OnTranslationEnd?.Invoke();
             }
         }
     }
@@ -88,19 +93,22 @@ public class TestMatchThreeGrid : MonoBehaviour
 
         return currentImageStartPositions;
     }
-    
+
     private void SetInitialGridPositions()
     {
         //using the pre established positions from prefab, record initial positions into grid
         gridImagePositions = new Vector2[ColumnLength, gridColumns[0].childCount];
-
+        int tileTypeMax = Enum.GetValues(typeof(TileType)).Length;
+        Random ran = new Random();
+        ;
         for (int i = 0; i < ColumnLength; i++)
         {
             for (int j = 0; j < gridColumns[0].childCount; j++)
             {
                 ObjectDragTest dragableObj = gridColumns[i].GetChild(j).GetComponent<ObjectDragTest>();
                 dragableObj.OnSwap += handleTileSwap;
-                
+                dragableObj.TileType = (TileType) ran.Next(0, tileTypeMax);
+
                 Vector3 pos = gridColumns[i].GetChild(j).position;
 
                 gridImagePositions[i, j] = new Vector2(pos.x, pos.y);
@@ -108,11 +116,46 @@ public class TestMatchThreeGrid : MonoBehaviour
         }
     }
 
-    private void handleTileSwap()
+    private void handleTileSwap(ObjectDragTest a, ObjectDragTest b)
     {
         doingSwap = true;
         translationImageStartPositions = getCurrentImagePositions();
         translationStartTime = Time.time;
         doImageTranslations = true;
+        OnTranslationEnd += () => checkAfterSwap(a, b);
+    }
+
+
+    private void checkAfterSwap(ObjectDragTest a, ObjectDragTest b)
+    {
+        checkObject(a,0);
+        checkObject(b,0);
+
+        OnTranslationEnd = null;
+    }
+
+    private void checkObject(ObjectDragTest a , int step)
+    {
+        if (step >= 10) return;
+        
+        if (a.North != null && !a.North.IsConnected)
+        {
+            checkObject(a.North,step + 1);
+        }
+
+        if (a.East != null && !a.East.IsConnected)
+        {
+            checkObject(a.East, step + 1);
+        }
+
+        if (a.South != null && !a.South.IsConnected)
+        {
+            checkObject(a.South, step + 1);
+        }
+
+        if (a.West != null && !a.West.IsConnected)
+        {
+            checkObject(a.West, step + 1);
+        }
     }
 }

@@ -9,13 +9,56 @@ using UnityEngine.UI;
 [RequireComponent(typeof(EventTrigger))]
 public class ObjectDragTest : MonoBehaviour
 {
-    
+    private TileType tileType;
+
+    public TileType TileType
+    {
+        get { return tileType; }
+        set
+        {
+            tileType = value;
+
+            #region testing only
+
+            switch (value)
+            {
+                case TileType.Red:
+                    GetComponent<Image>().color = isConnected?  Color.magenta : Color.red;
+                    break;
+                case TileType.Blue:
+                    GetComponent<Image>().color = isConnected?  Color.cyan : Color.blue;
+                    break;
+                case TileType.Green:
+                    GetComponent<Image>().color = isConnected?  Color.yellow : Color.green;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+
+            #endregion
+        }
+    }
+
+    public ObjectDragTest North => getConnectingObj(1);
+    public ObjectDragTest East => getConnectingObj(2);
+    public ObjectDragTest South => getConnectingObj(3);
+    public ObjectDragTest West => getConnectingObj(4);
+
+    private bool isConnected;
+    public bool IsConnected
+    {
+        get { return isConnected;}
+        set
+        {
+            isConnected = value;
+            TileType = tileType; //just to set color properly
+        }
+    }
+
     public int RowInColmn => transform.GetSiblingIndex();
     public int InColmn => transform.parent.GetSiblingIndex();
 
     private int swappingWithIndex;
-
-    public int SwappingWithIndex => swappingWithIndex;
 
     private bool isBeingDragged;
 
@@ -25,7 +68,7 @@ public class ObjectDragTest : MonoBehaviour
 
     private float Width;
 
-    public Action OnSwap;
+    public Action<ObjectDragTest, ObjectDragTest> OnSwap;
 
     private void Start()
     {
@@ -110,7 +153,7 @@ public class ObjectDragTest : MonoBehaviour
         if (swappableObject)
         {
             swapPositionsWith(swappableObject);
-            OnSwap?.Invoke();
+            OnSwap?.Invoke(this, swappableObject);
         }
 
 //		Debug.Log("Drag End");
@@ -134,23 +177,34 @@ public class ObjectDragTest : MonoBehaviour
     private ObjectDragTest getConnectingObj(int dir)
     {
         int totalColumnCount = transform.parent.parent.childCount;
-        int totalRowCount = transform.parent.GetChildCount();
 
         int currentRowindex = transform.GetSiblingIndex();
 
         Transform currentColumnTransform = transform.parent;
         Transform gridTransform = currentColumnTransform.parent;
+
+        Debug.Log(InColmn - 1);
+        
+        
         
         switch (dir)
         {
             case 1:
-                return currentRowindex < TestMatchThreeGrid.RowCutOff ? null : currentColumnTransform.GetChild(currentRowindex - 1).GetComponent<ObjectDragTest>();
+                return currentRowindex < TestMatchThreeGrid.RowCutOff
+                    ? null
+                    : currentColumnTransform.GetChild(currentRowindex - 1).GetComponent<ObjectDragTest>();
             case 2:
-                return InColmn == totalColumnCount - 1 ? null : gridTransform.GetChild(InColmn - 1).GetChild(currentRowindex).GetComponent<ObjectDragTest>();
+                return InColmn == totalColumnCount - 1
+                    ? null
+                    : gridTransform.GetChild(InColmn + 1).GetChild(currentRowindex).GetComponent<ObjectDragTest>();
             case 3:
-                return currentRowindex == currentColumnTransform.GetChildCount() - 1 ? null : currentColumnTransform.GetChild(currentRowindex + 1).GetComponent<ObjectDragTest>();
+                return currentRowindex == currentColumnTransform.childCount - 1
+                    ? null
+                    : currentColumnTransform.GetChild(currentRowindex + 1).GetComponent<ObjectDragTest>();
             case 4:
-                return InColmn == 0 ? null : gridTransform.GetChild(InColmn + 1).GetChild(currentRowindex).GetComponent<ObjectDragTest>();
+                return InColmn == 0
+                    ? null
+                    : gridTransform.GetChild(InColmn - 1).GetChild(currentRowindex).GetComponent<ObjectDragTest>();
             default:
                 return null;
         }
