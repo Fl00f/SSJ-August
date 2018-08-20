@@ -23,13 +23,13 @@ public class ObjectDragTest : MonoBehaviour
             switch (value)
             {
                 case TileType.Red:
-                    GetComponent<Image>().color = isConnected?  Color.magenta : Color.red;
+                    GetComponent<Image>().color = isConnected ? Color.magenta : Color.red;
                     break;
                 case TileType.Blue:
-                    GetComponent<Image>().color = isConnected?  Color.cyan : Color.blue;
+                    GetComponent<Image>().color = isConnected ? Color.cyan : Color.blue;
                     break;
                 case TileType.Green:
-                    GetComponent<Image>().color = isConnected?  Color.yellow : Color.green;
+                    GetComponent<Image>().color = isConnected ? Color.yellow : Color.green;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -39,15 +39,13 @@ public class ObjectDragTest : MonoBehaviour
         }
     }
 
-    public ObjectDragTest North => getConnectingObj(1);
-    public ObjectDragTest East => getConnectingObj(2);
-    public ObjectDragTest South => getConnectingObj(3);
-    public ObjectDragTest West => getConnectingObj(4);
+    public List<ObjectDragTest> Connections = new List<ObjectDragTest>();
 
     private bool isConnected;
+
     public bool IsConnected
     {
-        get { return isConnected;}
+        get { return isConnected; }
         set
         {
             isConnected = value;
@@ -67,6 +65,7 @@ public class ObjectDragTest : MonoBehaviour
     private Vector3 positionBeforeDrag;
 
     private float Width;
+    private float Height;
 
     public Action<ObjectDragTest, ObjectDragTest> OnSwap;
 
@@ -77,6 +76,7 @@ public class ObjectDragTest : MonoBehaviour
         Assert.IsNotNull(image);
 
         Width = image.rectTransform.sizeDelta.x;
+        Height = image.rectTransform.sizeDelta.y;
 
         EventTrigger triggers = GetComponent<EventTrigger>();
 
@@ -134,8 +134,35 @@ public class ObjectDragTest : MonoBehaviour
 
         float xClamped = Mathf.Clamp(x, xMin, xMax);
 
+
+        float y = Input.mousePosition.y;
+
+        float yMin = RowInColmn == transform.parent.childCount - 1
+            ? positionBeforeDrag.y
+            : positionBeforeDrag.y - Height;
+        float yMax = RowInColmn <= TestMatchThreeGrid.RowCutOff ? positionBeforeDrag.y : positionBeforeDrag.y + Height;
+
+        float yClamped = Mathf.Clamp(y, yMin, yMax);
+
+
         Vector3 pos = transform.position;
-        pos.x = xClamped;
+
+        Vector3 mouseDirection = positionBeforeDrag - Input.mousePosition;
+
+        float angle = 45;
+        
+        if (Vector3.Angle(transform.up, mouseDirection) <= angle ||
+            Vector3.Angle(transform.up * -1, mouseDirection) <= angle)
+        {
+            pos.y = yClamped;
+            pos.x = positionBeforeDrag.x;
+        }
+        else if (Vector3.Angle(transform.right, mouseDirection) <= angle ||
+                 Vector3.Angle(transform.right * -1, mouseDirection) <= angle)
+        {
+            pos.x = xClamped;
+            pos.y = positionBeforeDrag.y;
+        }
 
         transform.position = pos;
 
@@ -152,14 +179,13 @@ public class ObjectDragTest : MonoBehaviour
 
         if (swappableObject)
         {
-            swapPositionsWith(swappableObject);
             OnSwap?.Invoke(this, swappableObject);
         }
 
 //		Debug.Log("Drag End");
     }
 
-    private void swapPositionsWith(ObjectDragTest draggedObject)
+    public void swapPositionsWith(ObjectDragTest draggedObject)
     {
         Transform swappedParent = draggedObject.transform.parent;
         int swappedSibiliingIndex = draggedObject.transform.GetSiblingIndex();
@@ -174,7 +200,7 @@ public class ObjectDragTest : MonoBehaviour
         draggedObject.transform.SetSiblingIndex(currentSiblingIndex);
     }
 
-    private ObjectDragTest getConnectingObj(int dir)
+    public ObjectDragTest getConnectingObj(int dir)
     {
         int totalColumnCount = transform.parent.parent.childCount;
 
@@ -182,27 +208,42 @@ public class ObjectDragTest : MonoBehaviour
 
         Transform currentColumnTransform = transform.parent;
         Transform gridTransform = currentColumnTransform.parent;
-                
+
         switch (dir)
         {
-            case 1:
+            case 0:
                 return currentRowindex < TestMatchThreeGrid.RowCutOff
                     ? null
                     : currentColumnTransform.GetChild(currentRowindex - 1).GetComponent<ObjectDragTest>();
-            case 2:
+            case 1:
                 return InColmn == totalColumnCount - 1
                     ? null
                     : gridTransform.GetChild(InColmn + 1).GetChild(currentRowindex).GetComponent<ObjectDragTest>();
-            case 3:
+            case 2:
                 return currentRowindex == currentColumnTransform.childCount - 1
                     ? null
                     : currentColumnTransform.GetChild(currentRowindex + 1).GetComponent<ObjectDragTest>();
-            case 4:
+            case 3:
                 return InColmn == 0
                     ? null
                     : gridTransform.GetChild(InColmn - 1).GetChild(currentRowindex).GetComponent<ObjectDragTest>();
             default:
                 return null;
         }
+    }
+
+    public void AddConnection(ObjectDragTest obj)
+    {
+        if (Connections == null) Connections = new List<ObjectDragTest>();
+
+        obj.IsConnected = true;
+        IsConnected = true;
+        Connections.Add(obj);
+    }
+
+    public void ResetConnections()
+    {
+        Connections.Clear();
+        IsConnected = false;
     }
 }
