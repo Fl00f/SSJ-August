@@ -17,8 +17,11 @@ public class ObjectDragTest : MonoBehaviour
         set
         {
             tileType = value;
+            GetComponent<Image>().sprite = TestMatchThreeGrid.TileTypeDictionary[value];
 
             #region testing only
+            GetComponent<Image>().color = Color.white;
+            return;
 
             switch (value)
             {
@@ -150,7 +153,7 @@ public class ObjectDragTest : MonoBehaviour
         Vector3 mouseDirection = positionBeforeDrag - Input.mousePosition;
 
         float angle = 45;
-        
+
         if (Vector3.Angle(transform.up, mouseDirection) <= angle ||
             Vector3.Angle(transform.up * -1, mouseDirection) <= angle)
         {

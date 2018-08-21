@@ -26,6 +26,10 @@ public class TestMatchThreeGrid : MonoBehaviour
 
     public int minNumberOfConnections = 3;
 
+
+
+    public static Dictionary<TileType, Sprite> TileTypeDictionary;
+    
     #region Debug
 
     public bool doImageTranslations;
@@ -33,28 +37,29 @@ public class TestMatchThreeGrid : MonoBehaviour
 
     #endregion
 
+
+    public Sprite tileTypeOne;
+    public Sprite tileTypeTwo;
+    public Sprite tileTypeThree;
+    public Sprite tileTypeFour;
+
     // Use this for initialization
     void Start()
     {
         RowCutOff = 10;
+        TileTypeDictionary = new Dictionary<TileType, Sprite>()
+        {
+            { TileType.Red, tileTypeOne},
+            { TileType.Blue, tileTypeTwo},
+            { TileType.Green, tileTypeThree},
+            { TileType.Purple, tileTypeFour},
+        };
         SetInitialGridPositions();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            //reset
-            ObjectDragTest[] allObjects = FindObjectsOfType<ObjectDragTest>();
-
-            foreach (var objectDragTest in allObjects)
-            {
-                objectDragTest.IsConnected = false;
-            }
-        }
-
-
         if (doImageTranslations && translationImageStartPositions != null)
         {
             float percentage = (Time.time - translationStartTime) / translationTime;
@@ -115,6 +120,7 @@ public class TestMatchThreeGrid : MonoBehaviour
         {
             for (int j = 0; j < gridColumns[0].childCount; j++)
             {
+                
                 ObjectDragTest dragableObj = gridColumns[i].GetChild(j).GetComponent<ObjectDragTest>();
                 dragableObj.OnSwap += handleTileSwap;
                 dragableObj.TileType = (TileType) ran.Next(0, tileTypeMax);
