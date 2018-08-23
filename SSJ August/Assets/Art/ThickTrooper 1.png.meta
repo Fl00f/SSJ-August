@@ -1,11 +1,13 @@
 fileFormatVersion: 2
-guid: 67696b37ea86946f4ab93f0d10ed9864
+guid: f5289ec9054d743ef8b620ae6691d114
 TextureImporter:
   fileIDToRecycleName:
-    21300000: BlockColors_0
-    21300002: BlockColors_1
-    21300004: BlockColors_2
-    21300006: BlockColors_3
+    21300000: ThickTrooper 1_0
+    21300002: ThickTrooper 1_1
+    21300004: ThickTrooper 1_2
+    21300006: ThickTrooper 1_3
+    21300008: ThickTrooper 1_4
+    21300010: ThickTrooper 1_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -99,13 +101,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BlockColors_0
+      name: ThickTrooper 1_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 416
-        width: 386
-        height: 374
+        x: 38
+        y: 525
+        width: 340
+        height: 420
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -113,19 +115,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 80044010749e241858ebb000a07f0179
+      spriteID: 6ee1be717c35340a8ba60b4f9b7d40e8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlockColors_1
+      name: ThickTrooper 1_1
       rect:
         serializedVersion: 2
-        x: 407
-        y: 416
-        width: 386
-        height: 374
+        x: 420
+        y: 525
+        width: 342
+        height: 413
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,19 +135,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fd5336b292c5045e3bcc35c0ef3aa790
+      spriteID: 4d3619dd5998a43f0b0225c9923e9569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlockColors_2
+      name: ThickTrooper 1_2
       rect:
         serializedVersion: 2
-        x: 807
-        y: 416
-        width: 386
-        height: 374
+        x: 799
+        y: 525
+        width: 348
+        height: 406
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,19 +155,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c3457018a3d547828d3a974ddb14ea5
+      spriteID: 467663531d3e145559ea3d04a7175efb
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlockColors_3
+      name: ThickTrooper 1_3
       rect:
         serializedVersion: 2
-        x: 7
-        y: 16
-        width: 386
-        height: 374
+        x: 39
+        y: 10
+        width: 341
+        height: 414
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,7 +175,47 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a09d524f21554eeb8a618af3943b653
+      spriteID: a520d9664d8e4499ab4f7c0cff138971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThickTrooper 1_4
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 15
+        width: 342
+        height: 416
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cadfe8dd538045aca534a464ba1bbac
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThickTrooper 1_5
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 14
+        width: 349
+        height: 416
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fb2c691c586c400ea75cf4f4c2f2678
       vertices: []
       indices: 
       edges: []
@@ -181,7 +223,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 84e5f6c4feb7049d2ad892bb3da19437
+    spriteID: 2535b9eaef10e47ea83b40da15c98eb2
     vertices: []
     indices: 
     edges: []

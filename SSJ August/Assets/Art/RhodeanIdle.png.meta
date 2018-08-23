@@ -1,11 +1,13 @@
 fileFormatVersion: 2
-guid: 67696b37ea86946f4ab93f0d10ed9864
+guid: 0ff88505eff054752a97746c758d91da
 TextureImporter:
   fileIDToRecycleName:
-    21300000: BlockColors_0
-    21300002: BlockColors_1
-    21300004: BlockColors_2
-    21300006: BlockColors_3
+    21300000: RhodeanIdle_0
+    21300002: RhodeanIdle_1
+    21300004: RhodeanIdle_2
+    21300006: RhodeanIdle_3
+    21300008: RhodeanIdle_4
+    21300010: RhodeanIdle_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -99,13 +101,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BlockColors_0
+      name: RhodeanIdle_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 416
-        width: 386
-        height: 374
+        x: 50
+        y: 512
+        width: 331
+        height: 496
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -113,19 +115,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 80044010749e241858ebb000a07f0179
+      spriteID: 4247d5fecafb945bc9bcf82130dff80a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlockColors_1
+      name: RhodeanIdle_1
       rect:
         serializedVersion: 2
-        x: 407
-        y: 416
-        width: 386
-        height: 374
+        x: 422
+        y: 512
+        width: 337
+        height: 494
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,19 +135,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fd5336b292c5045e3bcc35c0ef3aa790
+      spriteID: a8fbd1d9bfc1343aca69aa3f29d0b0b3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlockColors_2
+      name: RhodeanIdle_2
       rect:
         serializedVersion: 2
-        x: 807
-        y: 416
-        width: 386
-        height: 374
+        x: 801
+        y: 513
+        width: 323
+        height: 480
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,19 +155,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c3457018a3d547828d3a974ddb14ea5
+      spriteID: 087ee8a75ac4447908a73e53b35a6eaa
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlockColors_3
+      name: RhodeanIdle_3
       rect:
         serializedVersion: 2
-        x: 7
-        y: 16
-        width: 386
-        height: 374
+        x: 42
+        y: 2
+        width: 320
+        height: 486
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,7 +175,47 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a09d524f21554eeb8a618af3943b653
+      spriteID: 104e6c3fa0f024ece987c1b087bd10de
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RhodeanIdle_4
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 5
+        width: 320
+        height: 473
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 657fb3cd3ccf24dedbee161431749769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RhodeanIdle_5
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 0
+        width: 316
+        height: 482
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3810b3bc7a98b43fea3bac7d14409ecd
       vertices: []
       indices: 
       edges: []
@@ -181,7 +223,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 84e5f6c4feb7049d2ad892bb3da19437
+    spriteID: c9c23bdf263f54ee7aba08db09cabf68
     vertices: []
     indices: 
     edges: []
