@@ -8,6 +8,86 @@ using Random = System.Random;
 using System.Linq;
 
 public class TestMatchThreeGrid : MonoBehaviour {
+
+    public Canvas GameCanvas;
+    public Canvas StartMenuCanvas;
+
+    private bool gameOn;
+    public bool GameOn {
+        get { return gameOn; }
+        set {
+            if (value && value != gameOn) {
+                StartGame ();
+            } else if (!value && value != gameOn) {
+                endGame ();
+            }
+
+            gameOn = value;
+        }
+    }
+    private int playerShotCounter;
+    public Text playerShotCount;
+
+    public int PlayerShotCounter {
+        get { return playerShotCounter; }
+        set {
+            playerShotCounter = value;
+            playerShotCount.text = playerShotCounter.ToString ();
+        }
+    }
+
+    private int aiShotCounter;
+    public Text AIShotCount;
+
+    public int AIShotCounter {
+        get { return aiShotCounter; }
+        set {
+            aiShotCounter = value;
+            AIShotCount.text = aiShotCounter.ToString ();
+        }
+    }
+
+    private int playerHealth;
+    public Text playerHealthText;
+
+    public int PlayerHealth {
+        get { return playerHealth; }
+        set {
+            playerHealth = value;
+            playerHealthText.text = playerHealth.ToString ();
+        }
+    }
+
+    private int aiHealth;
+    public Text aiHealthText;
+
+    public int AIHealth {
+        get { return aiHealth; }
+        set {
+            aiHealth = value;
+            aiHealthText.text = aiHealth.ToString ();
+        }
+    }
+
+    private int turnCounter;
+    public Text turnCount;
+
+    public int TurnCounter {
+        get { return turnCounter; }
+        set {
+            turnCounter = value;
+
+            if (turnCounter >= TurnsToActivateShooting) {
+                startCombat ();
+                turnCounter = 0;
+            }
+            turnCount.text = turnCounter.ToString ();
+
+        }
+    }
+
+    public int TurnsToActivateShooting = 4;
+
     public static int RowCutOff;
     public Transform[] gridColumns;
     private int ColumnLength => gridColumns.Length;
@@ -19,7 +99,7 @@ public class TestMatchThreeGrid : MonoBehaviour {
 
     public float normalTranslationTime;
     public float swapTime;
-    public bool doingSwap;
+    private bool doingSwap;
 
     private Action OnTranslationEnd;
 
@@ -27,12 +107,10 @@ public class TestMatchThreeGrid : MonoBehaviour {
 
     public static Dictionary<TileType, Sprite> TileTypeDictionary;
 
-    #region Debug
+    private bool doImageTranslations;
+    private float translationStartTime;
 
-    public bool doImageTranslations;
-    public float translationStartTime;
-
-    #endregion
+    private bool isInCombat;
 
     public Sprite tileTypeOne;
     public Sprite tileTypeTwo;
@@ -45,6 +123,7 @@ public class TestMatchThreeGrid : MonoBehaviour {
         TileTypeDictionary = new Dictionary<TileType, Sprite> () { { TileType.Red, tileTypeOne }, { TileType.Blue, tileTypeTwo }, { TileType.Green, tileTypeThree }, { TileType.Purple, tileTypeFour },
         };
         SetInitialGridPositions ();
+        GameCanvas.enabled = false;
     }
 
     // Update is called once per frame
@@ -61,6 +140,39 @@ public class TestMatchThreeGrid : MonoBehaviour {
                 OnTranslationEnd?.Invoke ();
             }
         }
+
+        if (isInCombat) {
+            handleCombat ();
+        }
+    }
+
+    private void StartGame () {
+        GameCanvas.enabled = true;
+        StartMenuCanvas.enabled = false;
+        resetGame ();
+    }
+
+    private void resetGame () {
+        AIShotCounter = 0;
+        PlayerShotCounter = 0;
+
+        TurnCounter = 0;
+
+        PlayerHealth = 10;
+        AIHealth = 10;
+
+        ObjectDragTest[] allObjects = FindObjectsOfType<ObjectDragTest> ();
+        allObjects.ToList ().ForEach (obj => obj.ResetConnections ());
+    }
+
+    private void loseGameState () {
+
+    }
+
+    private void endGame () {
+        resetGame ();
+        GameCanvas.enabled = false;
+        StartMenuCanvas.enabled = true;
     }
 
     private void translateImagesToGridPositions (float translationPercentage) {
@@ -137,8 +249,12 @@ public class TestMatchThreeGrid : MonoBehaviour {
         doingSwap = false;
 
         ObjectDragTest[] allObjects = FindObjectsOfType<ObjectDragTest> ();
+        int connections = 0;
+        bool addToTurnCount = false;
         //we add one because root is not part of the connection nodes
         foreach (var connectionRoot in allObjects.Where (a => a.Connections.Count + 1 >= minNumberOfConnections)) {
+            addToTurnCount = true;
+            connections++;
             //push connections up super high out of sight and make first child of parent
             for (int i = 0; i < connectionRoot.Connections.Count; i++) {
                 connectionRoot.Connections[i].transform.SetSiblingIndex (0);
@@ -148,6 +264,7 @@ public class TestMatchThreeGrid : MonoBehaviour {
 
                 connectionRoot.Connections[i].transform.position = posInner;
                 connectionRoot.Connections[i].GetComponent<Image> ().enabled = false;
+                connections++;
             }
 
             connectionRoot.transform.SetSiblingIndex (0);
@@ -156,6 +273,12 @@ public class TestMatchThreeGrid : MonoBehaviour {
             pos.y = 1000;
 
             connectionRoot.transform.position = pos;
+        }
+
+        PlayerShotCounter += Mathf.FloorToInt ((float) (connections / 3));
+
+        if (addToTurnCount) {
+            TurnCounter++;
         }
 
         //reset connections
@@ -186,5 +309,13 @@ public class TestMatchThreeGrid : MonoBehaviour {
                 setConnectionRoot (connection, root);
             }
         }
+    }
+
+    private void startCombat () {
+
+    }
+
+    private void handleCombat () {
+
     }
 }
