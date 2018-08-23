@@ -147,6 +147,7 @@ public class TestMatchThreeGrid : MonoBehaviour {
                 posInner.y = 1000;
 
                 connectionRoot.Connections[i].transform.position = posInner;
+                connectionRoot.Connections[i].GetComponent<Image> ().enabled = false;
             }
 
             connectionRoot.transform.SetSiblingIndex (0);
@@ -160,12 +161,20 @@ public class TestMatchThreeGrid : MonoBehaviour {
         //reset connections
         allObjects.ToList ().ForEach (obj => obj.ResetConnections ());
 
-        OnTranslationEnd = null;
-
         //since connections have been moved we need to translate again to push tiles down
         translationImageStartPositions = getCurrentImagePositions ();
         translationStartTime = Time.time;
         doImageTranslations = true;
+
+        OnTranslationEnd += () => {
+            ObjectDragTest[] allDaObjects = FindObjectsOfType<ObjectDragTest> ();
+            foreach (var item in allDaObjects) {
+                item.GetComponent<Image> ().enabled = true;
+            }
+
+            OnTranslationEnd = null;
+        };
+
     }
 
     private void setConnectionRoot (ObjectDragTest a, ObjectDragTest root) {
