@@ -649,9 +649,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 3
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 7060243e-523a-4dfb-970a-ae476a8ab1a5
+  projectName: SSJ August
+  organizationId: deltaohio
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
