@@ -6,12 +6,19 @@ using UnityEngine;
 public class Shooter : MonoBehaviour {
 
 	public GameObject ShotPrefab;
-	public const int destroyDistance = 10;
+	public const int destroyDistance = 1000;
 
-	public List<Transform> shots = new List<Transform> ();
+	private List<Transform> shots = new List<Transform> ();
 
-	public void StartShooting (int numberOfShots, float successRate, int fireRate = 2) {
+	private void Update () {
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			StartShooting (10, .5f, .5f);
+		}
+	}
+
+	public void StartShooting (int numberOfShots, float successRate, float fireRate = 2) {
 		StopAllCoroutines ();
+		shots.RemoveAll (a => a == null);
 
 		shots.ForEach (a => Destroy (a.gameObject));
 		shots = new List<Transform> ();
@@ -19,22 +26,23 @@ public class Shooter : MonoBehaviour {
 		StartCoroutine (shootIEnumerator (numberOfShots, successRate, fireRate));
 	}
 
-	private IEnumerator shootIEnumerator (int numberOfShots, float successRate, int shootEvery) {
+	private IEnumerator shootIEnumerator (int numberOfShots, float successRate, float shootEvery) {
 
-		shoot ();
-		int shotsLeft = numberOfShots;
+		shoot (successRate);
+		int shotsLeft = numberOfShots - 1;
 		float timeFromLastShot = Time.time;
 
 		while (shotsLeft > 0) {
+			shots.RemoveAll (a => a == null);
+
 			shots.ForEach ((a) => {
 				if (isPastDestroyDistance (a)) {
-					Destroy (a);
+					Destroy (a.gameObject);
 				}
 			});
-			shots.TrimExcess ();
 
 			if (Time.time - timeFromLastShot > shootEvery) {
-				shoot ();
+				shoot (successRate);
 				shotsLeft--;
 				timeFromLastShot = Time.time;
 			}
@@ -44,8 +52,14 @@ public class Shooter : MonoBehaviour {
 
 	}
 
-	private void shoot () {
+	private void shoot (float successRate) {
 		GameObject shot = Instantiate (ShotPrefab, transform.transform);
+		float randomAngle = Random.Range (-20, 20);
+		shot.transform.localRotation = Quaternion.Euler (0, 0, randomAngle);
+
+		ShotMoveForward shotMF = shot.GetComponent<ShotMoveForward> ();
+		shotMF.CanHit = Random.Range (0f, 1f) <= successRate;
+
 		shots.Add (shot.transform);
 	}
 

@@ -12,6 +12,15 @@ public class TestMatchThreeGrid : MonoBehaviour {
     public Canvas GameCanvas;
     public Canvas StartMenuCanvas;
 
+    public Canvas Losecanvas;
+    public Canvas Wincanvas;
+
+    public Shooter playerShooter;
+    public Shooter aiShooter;
+
+    private bool onLoseScene = false;
+    private bool onWinScene = false;
+
     private bool gameOn;
     public bool GameOn {
         get { return gameOn; }
@@ -53,7 +62,15 @@ public class TestMatchThreeGrid : MonoBehaviour {
     public int PlayerHealth {
         get { return playerHealth; }
         set {
-            playerHealth = value;
+            if (value > 0) {
+                playerHealth = value;
+            } else {
+                if (!onWinScene && !onLoseScene) {
+                    loseGameState ();
+                }
+                playerHealth = 0;
+            }
+
             playerHealthText.text = playerHealth.ToString ();
         }
     }
@@ -64,7 +81,14 @@ public class TestMatchThreeGrid : MonoBehaviour {
     public int AIHealth {
         get { return aiHealth; }
         set {
-            aiHealth = value;
+            if (value > 0) {
+                aiHealth = value;
+            } else {
+                if (!onWinScene && !onLoseScene) {
+                    winGameState ();
+                }
+                aiHealth = 0;
+            }
             aiHealthText.text = aiHealth.ToString ();
         }
     }
@@ -86,7 +110,35 @@ public class TestMatchThreeGrid : MonoBehaviour {
         }
     }
 
+    public int DifficultyRampInSeconds = 60;
+
     public int TurnsToActivateShooting = 4;
+    [Range (0, 1)] public float PlaySuccessRate;
+
+    [Range (0, 1)] public float AIStartAccuracy;
+    [Range (0, 1)] public float AIMaxAccuracy;
+    private float AIShotAccuracy {
+        get {
+            float dif = Time.time - gameStartTime;
+            float percentage = Mathf.Clamp (dif / (float) DifficultyRampInSeconds, AIStartAccuracy, AIMaxAccuracy);
+            return percentage;
+        }
+    }
+
+    public int maxSecondForAIShotCount = 10;
+    public int minSecondForAIShotCount = 1;
+
+    private int AiGetShotEveryNSecond {
+        get {
+            float dif = Time.time - gameStartTime;
+            float percentage = Mathf.Clamp (dif / (float) DifficultyRampInSeconds, 0f, 1f);
+
+            float timePerShotCounter = Mathf.Clamp ((1f - percentage) * maxSecondForAIShotCount, minSecondForAIShotCount, maxSecondForAIShotCount + 1);
+            return (int) timePerShotCounter;
+        }
+    }
+
+    private float gameStartTime;
 
     public static int RowCutOff;
     public Transform[] gridColumns;
@@ -126,8 +178,10 @@ public class TestMatchThreeGrid : MonoBehaviour {
         GameCanvas.enabled = false;
     }
 
+    private float aiTurnTimeCounter = 0;
     // Update is called once per frame
     void Update () {
+
         if (doImageTranslations && translationImageStartPositions != null) {
             float percentage = (Time.time - translationStartTime) / translationTime;
             float percentageClamp = Mathf.Clamp (percentage, 0, 1);
@@ -141,8 +195,11 @@ public class TestMatchThreeGrid : MonoBehaviour {
             }
         }
 
-        if (isInCombat) {
-            handleCombat ();
+        aiTurnTimeCounter += Time.deltaTime;
+
+        if (gameOn && aiTurnTimeCounter > AiGetShotEveryNSecond) {
+            aiTurnTimeCounter = 0;
+            AIShotCounter++;
         }
     }
 
@@ -150,6 +207,7 @@ public class TestMatchThreeGrid : MonoBehaviour {
         GameCanvas.enabled = true;
         StartMenuCanvas.enabled = false;
         resetGame ();
+        gameStartTime = Time.time;
     }
 
     private void resetGame () {
@@ -161,18 +219,33 @@ public class TestMatchThreeGrid : MonoBehaviour {
         PlayerHealth = 10;
         AIHealth = 10;
 
+        aiTurnTimeCounter = 0;
+
+        gameStartTime = 0;
+
         ObjectDragTest[] allObjects = FindObjectsOfType<ObjectDragTest> ();
         allObjects.ToList ().ForEach (obj => obj.ResetConnections ());
+
+        Wincanvas.enabled = false;
+        Losecanvas.enabled = false;
     }
 
     private void loseGameState () {
+        onLoseScene = true;
+        Losecanvas.enabled = true;
+    }
 
+    private void winGameState () {
+        onWinScene = true;
+        Wincanvas.enabled = true;
     }
 
     private void endGame () {
         resetGame ();
         GameCanvas.enabled = false;
         StartMenuCanvas.enabled = true;
+        Wincanvas.enabled = false;
+        Losecanvas.enabled = false;
     }
 
     private void translateImagesToGridPositions (float translationPercentage) {
@@ -264,6 +337,10 @@ public class TestMatchThreeGrid : MonoBehaviour {
 
                 connectionRoot.Connections[i].transform.position = posInner;
                 connectionRoot.Connections[i].GetComponent<Image> ().enabled = false;
+
+                int numberOfTiles = Enum.GetValues (typeof (TileType)).Length;
+                connectionRoot.Connections[i].TileType = (TileType) UnityEngine.Random.Range (0, numberOfTiles);
+
                 connections++;
             }
 
@@ -311,8 +388,20 @@ public class TestMatchThreeGrid : MonoBehaviour {
         }
     }
 
-    private void startCombat () {
+    public void HandlePlayerHit () {
+        PlayerHealth--;
+    }
 
+    public void HandleAIHit () {
+        AIHealth--;
+    }
+
+    private void startCombat () {
+        playerShooter.StartShooting (PlayerShotCounter, PlaySuccessRate, .5f);
+        aiShooter.StartShooting (AIShotCounter, AIShotAccuracy, .5f);
+
+        PlayerShotCounter = 0;
+        AIShotCounter = 0;
     }
 
     private void handleCombat () {

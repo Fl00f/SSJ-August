@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class ShotMoveForward : MonoBehaviour {
 
-	public float moveRate = 1;
+	private float moveRate = 200;
 	public bool CanHit;
 	// Update is called once per frame
 	void Update () {
-		transform.Translate (0, 0, moveRate * Time.deltaTime);
+		transform.Translate (moveRate * Time.deltaTime, 0, 0);
 	}
+
+	void OnTriggerEnter2D (Collider2D col) {
+		Target tar = col.gameObject.GetComponent<Target> ();
+		if (tar != null && CanHit) {
+			tar.OnHit?.Invoke ();
+			Destroy(gameObject);
+		}
+	}
+
 }
