@@ -87,9 +87,15 @@ public class SoundController : MonoBehaviour {
 		BackGround_Long.Play ();
 	}
 
+	int laserStopCount = 0;
 	public void LaserFireStop () {
-		if (BackGround_Long.isPlaying && BackGround_Long.clip.Equals (LaserFire)) {
+		laserStopCount++;
+		if (BackGround_Long.isPlaying && BackGround_Long.clip.Equals (LaserFire) && laserStopCount == 2) {
 			BackGround_Long.Stop ();
+		}
+
+		if (laserStopCount > 2) {
+			laserStopCount = 1;
 		}
 	}
 

@@ -3127,7 +3127,7 @@ MonoBehaviour:
   playerHealthText: {fileID: 2100133607}
   aiHealthText: {fileID: 1499711874}
   turnCount: {fileID: 1279241581}
-  DifficultyRampInSeconds: 300
+  DifficultyRampInSeconds: 120
   TurnsToActivateShooting: 4
   PlaySuccessRate: 0.05
   AIStartAccuracy: 0.1

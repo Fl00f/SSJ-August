@@ -232,7 +232,7 @@ public class TestMatchThreeGrid : MonoBehaviour {
         TurnCounter = 0;
 
         PlayerHealth = 10;
-        AIHealth = 1;
+        AIHealth = 10;
 
         aiTurnTimeCounter = 0;
 
