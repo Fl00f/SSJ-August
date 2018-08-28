@@ -4,6 +4,9 @@ using System.Linq;
 using UnityEngine;
 
 public class Shooter : MonoBehaviour {
+	public Animator animator;
+
+	public SoundController SoundController;
 
 	public GameObject ShotPrefab;
 	public const int destroyDistance = 1000;
@@ -50,6 +53,10 @@ public class Shooter : MonoBehaviour {
 			yield return new WaitForEndOfFrame ();
 		}
 
+		yield return new WaitForEndOfFrame ();
+
+		SoundController.LaserFireStop ();
+		animator.SetBool ("IsShooting", false);
 	}
 
 	private void shoot (float successRate) {

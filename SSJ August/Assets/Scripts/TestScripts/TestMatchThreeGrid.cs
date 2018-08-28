@@ -8,7 +8,10 @@ using Random = System.Random;
 using System.Linq;
 
 public class TestMatchThreeGrid : MonoBehaviour {
+    public Animator animatorThiccTrooper;
+    public Animator animatorRhodean;
 
+    public SoundController SoundController;
     public Canvas GameCanvas;
     public Canvas StartMenuCanvas;
 
@@ -27,8 +30,10 @@ public class TestMatchThreeGrid : MonoBehaviour {
         set {
             if (value && value != gameOn) {
                 StartGame ();
+                SoundController.OnGameStart ();
             } else if (!value && value != gameOn) {
                 endGame ();
+                SoundController.OnGoToMenu ();
             }
 
             gameOn = value;
@@ -66,7 +71,11 @@ public class TestMatchThreeGrid : MonoBehaviour {
                 playerHealth = value;
             } else {
                 if (!onWinScene && !onLoseScene) {
+                    SoundController.OnThiccTrooperDeath ();
+
                     loseGameState ();
+                    animatorThiccTrooper.SetTrigger ("Dead");
+
                 }
                 playerHealth = 0;
             }
@@ -86,6 +95,8 @@ public class TestMatchThreeGrid : MonoBehaviour {
             } else {
                 if (!onWinScene && !onLoseScene) {
                     winGameState ();
+                    SoundController.OnRhodeanDeath ();
+                    animatorRhodean.SetTrigger ("Dead");
                 }
                 aiHealth = 0;
             }
@@ -211,13 +222,17 @@ public class TestMatchThreeGrid : MonoBehaviour {
     }
 
     private void resetGame () {
+
+        animatorRhodean.Play ("Idle");
+        animatorThiccTrooper.Play ("Idle");
+
         AIShotCounter = 0;
         PlayerShotCounter = 0;
 
         TurnCounter = 0;
 
         PlayerHealth = 10;
-        AIHealth = 10;
+        AIHealth = 1;
 
         aiTurnTimeCounter = 0;
 
@@ -310,9 +325,14 @@ public class TestMatchThreeGrid : MonoBehaviour {
         //if number of connections is zero swap back
         if (allObjects.Count (obj => obj.Connections.Count + 1 >= minNumberOfConnections) == 0 ||
             a.TileType == b.TileType) {
+            SoundController.OnTileSwitchFail ();
+
             //swap back
             a.swapPositionsWith (b);
             allObjects.ToList ().ForEach (obj => obj.ResetConnections ());
+        } else {
+            SoundController.OnTileSwitchSuccess ();
+
         }
 
         OnTranslationEnd += handleSwapTranslationEnd;
@@ -402,9 +422,11 @@ public class TestMatchThreeGrid : MonoBehaviour {
 
         PlayerShotCounter = 0;
         AIShotCounter = 0;
-    }
 
-    private void handleCombat () {
+        animatorThiccTrooper.SetBool ("IsShooting", true);
+        animatorRhodean.SetBool ("IsShooting", true);
+
+        SoundController.LaserFireStart ();
 
     }
 }
